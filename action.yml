@@ -1,0 +1,115 @@
+name: Install Tool From GitHub Release
+description: Installs a tool from a GitHub repository release.
+branding:
+  icon: cloud
+  color: gray-dark
+inputs:
+  github_token:
+    description: GitHub token to use for authentication.
+    required: true
+  owner:
+    description: GitHub repository owner.
+    required: true
+  repository:
+    description: GitHub repository.
+    required: true
+  name:
+    description: Name of the tool being installed, if not set this will default to the repository. This can be used in the filename format as {name}
+    required: false
+  tag_prefix:
+    description: Version tag prefix.
+    required: false
+    default: v
+  arch_amd64:
+    description: Architecture string for AMD64. This can be used in the filename format as {arch}.
+    required: false
+    default: amd64
+  arch_arm64:
+    description: Architecture string for ARM64. This can be used in the filename format as {arch}.
+    required: false
+    default: arm64
+  os_linux:
+    description: OS name when the platform is Linux. This can be used in the filename format as {os}.
+    required: false
+    default: linux
+  os_macos:
+    description: OS name when the platform is macOS. This can be used in the filename format as {os}.
+    required: false
+    default: macos
+  os_windows:
+    description: OS name when the platform is Windows. This can be used in the filename format as {os}.
+    required: false
+    default: windows
+  extract:
+    description: If the download needs extracting.
+    required: false
+    default: "true"
+  extract_mode_linux:
+    description: Extraction mode when the runner platform is Linux; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
+    required: false
+    default: tar.gz
+  extract_mode_macos:
+    description: Extraction mode when the platform is macOS; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {os}.
+    required: false
+    default: tar.gz
+  extract_mode_windows:
+    description: Extraction mode when the platform is Windows; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {os}.
+    required: false
+    default: zip
+  filename_format:
+    description: Filename format to use if platform specific format hasn't been provided.
+    required: false
+    default: "{name}_{version}_{os}_{arch}.{ext}"
+  filename_format_linux:
+    description: Filename format to use when the platform is Linux.
+    required: false
+  filename_format_macos:
+    description: Filename format to use when the platform is macOS.
+    required: false
+  filename_format_windows:
+    description: Filename format to use when the platform is Windows.
+    required: false
+  check_command:
+    description: Command to test if the tool was installed correctly.
+    required: false
+
+  version:
+    description: Version of the GitHub release to lookup; latest is supported.
+    required: false
+    default: latest
+runs:
+  using: composite
+  steps:
+    - name: Lookup version
+      id: version
+      uses: action-stars/github-release-lookup@c86fa936d2dea43eac094b7d3e4ed486a93d1484 # v0.1.0
+      with:
+        github_token: ${{ inputs.github_token }}
+        owner: ${{ inputs.owner }}
+        repository: ${{ inputs.repository }}
+        tag_prefix: ${{ inputs.tag_prefix }}
+        version: ${{ inputs.version }}
+
+    - name: Install tool
+      uses: pbrisbin/setup-tool-action@0f1ba8776ed87b7f289ee39ce921ade54b8f33ee # v1.1.0
+      with:
+        github-token: ${{ inputs.github_token }}
+        name: ${{ inputs.name || inputs.repository }}
+        no-extract: ${{ !fromJSON(inputs.extract) }}
+        arch-x64: ${{ inputs.arch_amd64 }}
+        os-linux: ${{ inputs.os_linux }}
+        os-darwin: ${{ inputs.os_macos }}
+        os-win32: ${{ inputs.os_windows }}
+        ext-linux: ${{ inputs.extract_mode_linux }}
+        ext-darwin: ${{ inputs.extract_mode_macos }}
+        ext-win32: ${{ inputs.extract_mode_windows }}
+        url-linux: ${{ inputs.filename_format_linux && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_linux) }}
+        url-darwin: ${{ inputs.filename_format_macos && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_macos) }}
+        url-win32: ${{ inputs.filename_format_windows && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_windows) }}
+        url: https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format }}
+        version: ${{ steps.version.outputs.version }}
+
+    - name: Check
+      if: inputs.check_command
+      shell: bash
+      run: ${{ inputs.check_command }}
