@@ -44,6 +44,9 @@ inputs:
     description: If the download needs extracting.
     required: false
     default: "true"
+  subdirectory:
+    description: Subdirectory within the archive to find the executable(s).
+    required: false
   extract_mode_linux:
     description: Extraction mode when the runner platform is Linux; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
     required: false
@@ -72,7 +75,6 @@ inputs:
   check_command:
     description: Command to test if the tool was installed correctly.
     required: false
-
   version:
     description: Version of the GitHub release to lookup; latest is supported.
     required: false
@@ -103,6 +105,7 @@ runs:
         ext-linux: ${{ inputs.extract_mode_linux }}
         ext-darwin: ${{ inputs.extract_mode_macos }}
         ext-win32: ${{ inputs.extract_mode_windows }}
+        subdir: ${{ inputs.subdirectory }}
         url-linux: ${{ inputs.filename_format_linux && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_linux) }}
         url-darwin: ${{ inputs.filename_format_macos && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_macos) }}
         url-win32: ${{ inputs.filename_format_windows && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_windows) }}

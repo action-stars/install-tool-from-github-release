@@ -8,15 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 <!--
-- Added; for new features.
-- Changed; for changes in existing functionality.
-- Deprecated; for soon-to-be removed features.
-- Removed; for now removed features.
-- Fixed; for any bug fixes.
-- Security; in case of vulnerabilities.
+## [UNRELEASED]
+
+### Added - For new features.
+### Changed - For changes in existing functionality.
+### Deprecated - For soon-to-be removed features.
+### Removed - For now removed features.
+### Fixed - For any bug fixes.
+### Security - In case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [v0.2.0] - 2023-06-30
+
+### Added
+
+- Added support for nested artifacts via the `subdirectory` input.
+
+## [v0.1.0] - 2023-05-22
 
 ### Added
 
