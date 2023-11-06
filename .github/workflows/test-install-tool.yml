@@ -4,11 +4,13 @@ on:
   push:
     paths:
       - "action.yml"
+      - ".github/workflows/test-install-tool.yml"
   pull_request:
     branches:
       - main
     paths:
       - "action.yml"
+      - ".github/workflows/test-install-tool.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,7 +20,7 @@ permissions: {}
 
 jobs:
   test_install_sccache:
-    name: test-install sccache (latest)
+    name: test-install sccache (latest + filename_format)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -51,7 +53,7 @@ jobs:
           sccache --show-stats
 
   test_install_sccache_linux:
-    name: test-install sccache (0.5.4)
+    name: test-install sccache (0.5.4 + linux_filename_format)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -70,7 +72,7 @@ jobs:
           name: sccache
           extract: true
           tag_prefix: v
-          version: latest
+          version: 0.5.4
           os_linux: unknown-linux-musl
           arch_amd64: x86_64
           subdirectory: "{name}-v{version}-{arch}-{os}"
