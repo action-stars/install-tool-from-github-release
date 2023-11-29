@@ -95,14 +95,21 @@ runs:
       id: platform_urls
       shell: bash
       run: |
-        if [[ -n "${{ inputs.filename_format_linux }}" ]]; then
-          echo "linux_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_linux }}" >> "$GITHUB_OUTPUT"
+        set -euo pipefail
+        
+        if [[ -n "${{ inputs.filename_format_linux }}" ]]
+        then
+          echo "linux_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_linux }}" >> "${GITHUB_OUTPUT}"
         fi
-        if [[ -n "${{ inputs.filename_format_macos }}" ]]; then
-          echo "macos_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_macos }}" >> "$GITHUB_OUTPUT"
+        
+        if [[ -n "${{ inputs.filename_format_macos }}" ]]
+        then
+          echo "macos_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_macos }}" >> "${GITHUB_OUTPUT}"
         fi
-        if [[ -n "${{ inputs.filename_format_windows }}" ]]; then
-          echo "windows_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_windows }}" >> "$GITHUB_OUTPUT"
+        
+        if [[ -n "${{ inputs.filename_format_windows }}" ]]
+        then
+          echo "windows_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_windows }}" >> "${GITHUB_OUTPUT}"
         fi
 
     - name: Install tool
