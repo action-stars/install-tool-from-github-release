@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+## [v0.2.1] - 2023-12-04
+
+### Fixed
+
+- Fixed format by using inline bash. ([#2](https://github.com/action-stars/install-tool-from-github-release/pull/2)) @[quotidian-ennui](https://github.com/quotidian-ennui)
+
 ## [v0.2.0] - 2023-06-30
 
 ### Added
