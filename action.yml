@@ -52,11 +52,11 @@ inputs:
     required: false
     default: tar.gz
   extract_mode_macos:
-    description: Extraction mode when the platform is macOS; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {os}.
+    description: Extraction mode when the platform is macOS; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
     required: false
     default: tar.gz
   extract_mode_windows:
-    description: Extraction mode when the platform is Windows; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {os}.
+    description: Extraction mode when the platform is Windows; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
     required: false
     default: zip
   filename_format:
@@ -91,6 +91,26 @@ runs:
         repository: ${{ inputs.repository }}
         tag_prefix: ${{ inputs.tag_prefix }}
         version: ${{ inputs.version }}
+    - name: Derive platform URLs
+      id: platform_urls
+      shell: bash
+      run: |
+        set -euo pipefail
+        
+        if [[ -n "${{ inputs.filename_format_linux }}" ]]
+        then
+          echo "linux_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_linux }}" >> "${GITHUB_OUTPUT}"
+        fi
+        
+        if [[ -n "${{ inputs.filename_format_macos }}" ]]
+        then
+          echo "macos_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_macos }}" >> "${GITHUB_OUTPUT}"
+        fi
+        
+        if [[ -n "${{ inputs.filename_format_windows }}" ]]
+        then
+          echo "windows_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_windows }}" >> "${GITHUB_OUTPUT}"
+        fi
 
     - name: Install tool
       uses: pbrisbin/setup-tool-action@0f1ba8776ed87b7f289ee39ce921ade54b8f33ee # v1.1.0
@@ -106,9 +126,9 @@ runs:
         ext-darwin: ${{ inputs.extract_mode_macos }}
         ext-win32: ${{ inputs.extract_mode_windows }}
         subdir: ${{ inputs.subdirectory }}
-        url-linux: ${{ inputs.filename_format_linux && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_linux) }}
-        url-darwin: ${{ inputs.filename_format_macos && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_macos) }}
-        url-win32: ${{ inputs.filename_format_windows && format('https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/%s', inputs.filename_format_windows) }}
+        url-linux: ${{ inputs.filename_format_linux && steps.platform_urls.outputs.linux_url }}
+        url-darwin: ${{ inputs.filename_format_macos && steps.platform_urls.outputs.macos_url }}
+        url-win32: ${{ inputs.filename_format_windows && steps.platform_urls.outputs.windows_url  }}
         url: https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format }}
         version: ${{ steps.version.outputs.version }}
 
