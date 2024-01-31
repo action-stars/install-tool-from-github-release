@@ -14,11 +14,17 @@
 
 ## [UNRELEASED]
 
+## [v0.2.2] - 2024-01-31
+
+### Changed
+
+- Updated `pbrisbin/setup-tool-action` from `1.1.0` to [2.0.0](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.0.0). ([#3](https://github.com/action-stars/install-tool-from-github-release/pull/3)) _@dependabot_
+
 ## [v0.2.1] - 2023-12-04
 
 ### Fixed
 
-- Fixed format by using inline bash. ([#2](https://github.com/action-stars/install-tool-from-github-release/pull/2)) @[quotidian-ennui](https://github.com/quotidian-ennui)
+- Fixed format by using inline bash. ([#2](https://github.com/action-stars/install-tool-from-github-release/pull/2)) [@quotidian-ennui](https://github.com/quotidian-ennui)
 
 ## [v0.2.0] - 2023-06-30
 
@@ -35,7 +41,8 @@
 <!--
 RELEASES
 -->
-[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.1...HEAD
+[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.2...HEAD
+[v0.2.2]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.1.0
