@@ -72,6 +72,9 @@ inputs:
   filename_format_windows:
     description: Filename format to use when the platform is Windows.
     required: false
+  rename:
+    description: Rename a tool after it is installed; <before>=<after>.
+    required: false
   check_command:
     description: Command to test if the tool was installed correctly.
     required: false
@@ -91,22 +94,23 @@ runs:
         repository: ${{ inputs.repository }}
         tag_prefix: ${{ inputs.tag_prefix }}
         version: ${{ inputs.version }}
+
     - name: Derive platform URLs
       id: platform_urls
       shell: bash
       run: |
         set -euo pipefail
-        
+
         if [[ -n "${{ inputs.filename_format_linux }}" ]]
         then
           echo "linux_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_linux }}" >> "${GITHUB_OUTPUT}"
         fi
-        
+
         if [[ -n "${{ inputs.filename_format_macos }}" ]]
         then
           echo "macos_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_macos }}" >> "${GITHUB_OUTPUT}"
         fi
-        
+
         if [[ -n "${{ inputs.filename_format_windows }}" ]]
         then
           echo "windows_url=https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format_windows }}" >> "${GITHUB_OUTPUT}"
@@ -131,6 +135,21 @@ runs:
         url-win32: ${{ inputs.filename_format_windows && steps.platform_urls.outputs.windows_url  }}
         url: https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format }}
         version: ${{ steps.version.outputs.version }}
+
+    - name: Rename
+      if: inputs.rename
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        input="${{ inputs.rename }}"
+        before="${input%=*}"
+        after="${input#*=}"
+
+        before_path="$(which "${before}")"
+        after_path="$(dirname "${before_path}")/${after}"
+
+        mv -f "${before_path}" "${after_path}"
 
     - name: Check
       if: inputs.check_command
