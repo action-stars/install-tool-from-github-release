@@ -14,6 +14,8 @@
 
 ## [UNRELEASED]
 
+## [v0.2.3] - 2024-05-10
+
 ### Added
 
 - Added support for renaming tool binaries. ([#6](https://github.com/action-stars/install-tool-from-github-release/pull/6)) _@stevehipwell_
@@ -45,7 +47,8 @@
 <!--
 RELEASES
 -->
-[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.2...HEAD
+[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.3...HEAD
+[v0.2.3]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.0
