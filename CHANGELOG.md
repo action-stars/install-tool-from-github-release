@@ -14,6 +14,10 @@
 
 ## [UNRELEASED]
 
+### Added
+
+- Added support for renaming tool binaries. ([#6](https://github.com/action-stars/install-tool-from-github-release/pull/6)) _@stevehipwell_
+
 ## [v0.2.2] - 2024-01-31
 
 ### Changed
