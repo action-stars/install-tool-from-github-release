@@ -14,11 +14,17 @@
 
 ## [UNRELEASED]
 
+## [v0.2.4] - 2024-06-02
+
+### Added
+
+- Added support for aliasing tool binaries via the `alias` input. ([#7](https://github.com/action-stars/install-tool-from-github-release/pull/7)) _@stevehipwell_
+
 ## [v0.2.3] - 2024-05-10
 
 ### Added
 
-- Added support for renaming tool binaries. ([#6](https://github.com/action-stars/install-tool-from-github-release/pull/6)) _@stevehipwell_
+- Added support for renaming tool binaries via the `rename` input. ([#6](https://github.com/action-stars/install-tool-from-github-release/pull/6)) _@stevehipwell_
 
 ## [v0.2.2] - 2024-01-31
 
@@ -47,7 +53,8 @@
 <!--
 RELEASES
 -->
-[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.3...HEAD
+[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.4...HEAD
+[v0.2.4]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.1
