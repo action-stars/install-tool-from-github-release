@@ -75,6 +75,9 @@ inputs:
   rename:
     description: Rename a tool after it is installed; <before>=<after>.
     required: false
+  alias:
+    description: Alias a tool after it is installed; <target>=<alias>.
+    required: false
   check_command:
     description: Command to test if the tool was installed correctly.
     required: false
@@ -150,6 +153,21 @@ runs:
         after_path="$(dirname "${before_path}")/${after}"
 
         mv -f "${before_path}" "${after_path}"
+
+    - name: Alias
+      if: inputs.alias
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        input="${{ inputs.alias }}"
+        target="${input%=*}"
+        alias="${input#*=}"
+
+        target_path="$(which "${target}")"
+        alias_path="$(dirname "${target_path}")/${alias}"
+
+        ln -s "${target_path}" "${alias_path}"
 
     - name: Check
       if: inputs.check_command
