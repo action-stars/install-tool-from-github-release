@@ -120,7 +120,7 @@ runs:
         fi
 
     - name: Install tool
-      uses: pbrisbin/setup-tool-action@27906d78276791f902494d941fd4ec50e3248947 # v2.0.2
+      uses: pbrisbin/setup-tool-action@68657ff65060bb3761c842377c0f94a7ff98c28d # v2.1.1
       with:
         github-token: ${{ inputs.github_token }}
         name: ${{ inputs.name || inputs.repository }}
