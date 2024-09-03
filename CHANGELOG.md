@@ -14,6 +14,10 @@
 
 ## [UNRELEASED]
 
+### Changed
+
+- Updated _pbrisbin/setup-tool-action_ from `2.0.2` to [`2.1.1`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.1.1). ([#10](https://github.com/action-stars/install-tool-from-github-release/pull/10)) _@dependabot_
+
 ## [v0.2.4] - 2024-06-02
 
 ### Added
@@ -25,6 +29,10 @@
 ### Added
 
 - Added support for renaming tool binaries via the `rename` input. ([#6](https://github.com/action-stars/install-tool-from-github-release/pull/6)) _@stevehipwell_
+
+### Changed
+
+- Updated _pbrisbin/setup-tool-action_ from `2.0.0` to [`2.0.2`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.0.2). ([#4](https://github.com/action-stars/install-tool-from-github-release/pull/4)) _@dependabot_
 
 ## [v0.2.2] - 2024-01-31
 
