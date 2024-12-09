@@ -16,7 +16,7 @@
 
 ### Changed
 
-- Updated _pbrisbin/setup-tool-action_ from `2.0.2` to [`2.1.1`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.1.1). ([#10](https://github.com/action-stars/install-tool-from-github-release/pull/10)) _@dependabot_
+- Updated _pbrisbin/setup-tool-action_ from `2.0.2` to [`2.1.2`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.1.2). ([#10](https://github.com/action-stars/install-tool-from-github-release/pull/10) & [#14](https://github.com/action-stars/install-tool-from-github-release/pull/14)) _@dependabot_
 
 ## [v0.2.4] - 2024-06-02
 
