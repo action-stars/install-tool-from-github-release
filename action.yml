@@ -73,10 +73,10 @@ inputs:
     description: Filename format to use when the platform is Windows.
     required: false
   rename:
-    description: Rename a tool after it is installed; <before>=<after>.
+    description: Rename a tool after it is installed; `<before>=<after>`.
     required: false
   alias:
-    description: Alias a tool after it is installed; <target>=<alias>.
+    description: Alias a tool after it is installed; `<target>=<alias>`.
     required: false
   check_command:
     description: Command to test if the tool was installed correctly.
