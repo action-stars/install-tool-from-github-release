@@ -1,0 +1,25 @@
+name: Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  workflow:
+    name: Workflow
+    uses: LexisNexis-RBA/risk-gh-action-generic-workflows/.github/workflows/validate-gh-action.yaml@b74b1c402e46e3f71ee35aa0a577471cbe772b2e # v0.5.2
+    with:
+      auto_doc: true
+      markdownlint: true
+      shellcheck: true
+      yamlfmt: true

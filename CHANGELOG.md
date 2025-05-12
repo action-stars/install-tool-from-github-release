@@ -1,5 +1,6 @@
 # Install Tool From GitHub Release GitHub Action Changelog
 
+<!-- markdownlint-disable-next-line MD052 -->
 > [!NOTE]
 > All notable changes to this project will be documented in this file; the format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -14,9 +15,13 @@
 
 ## [UNRELEASED]
 
+## [v0.2.5] - 2025-05-12
+
 ### Changed
 
-- Updated _pbrisbin/setup-tool-action_ from `2.0.2` to [`2.2.1`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.2.1). ([#10](https://github.com/action-stars/install-tool-from-github-release/pull/10), [#14](https://github.com/action-stars/install-tool-from-github-release/pull/14) & [#17](https://github.com/action-stars/install-tool-from-github-release/pull/17)) _@dependabot_
+- Updated _pbrisbin/setup-tool-action_ from `2.0.2` to [`2.1.1`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.1.1). ([#10](https://github.com/action-stars/install-tool-from-github-release/pull/10)) _@dependabot_
+- Updated _pbrisbin/setup-tool-action_ from `2.1.1` to [`2.2.0`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.2.0). ([#14](https://github.com/action-stars/install-tool-from-github-release/pull/14)) _@dependabot_
+- Updated _pbrisbin/setup-tool-action_ from `2.2.0` to [`2.2.1`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.2.1). ([#17](https://github.com/action-stars/install-tool-from-github-release/pull/17)) _@dependabot_-action/releases/tag/v2.2.- Updated _pbrisbin/setup-tool-action_ from `2.2.1` to [`2.2.2`](https://github.com/pbrisbin/setup-tool-action/releases/tag/v2.2.2). ([#23](https://github.com/action-stars/install-tool-from-github-release/pull/23)) _@dependabot_
 
 ## [v0.2.4] - 2024-06-02
 
@@ -61,7 +66,8 @@
 <!--
 RELEASES
 -->
-[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.4...HEAD
+[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.5...HEAD
+[v0.2.5]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.2
