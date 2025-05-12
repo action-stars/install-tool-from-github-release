@@ -14,7 +14,7 @@ Installs a tool from a GitHub repository release.
 
 |          INPUT          |  TYPE  | REQUIRED |                DEFAULT                 |                                                             DESCRIPTION                                                              |
 |-------------------------|--------|----------|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-|          alias          | string |  false   |                                        |                                        Alias a tool after it is installed; <target>=<alias>.                                         |
+|          alias          | string |  false   |                                        |                                       Alias a tool after it is installed; `<target>=<alias>`.                                        |
 |       arch_amd64        | string |  false   |               `"amd64"`                |                          Architecture string for AMD64. This can be used in the filename format as {arch}.                           |
 |       arch_arm64        | string |  false   |               `"arm64"`                |                          Architecture string for ARM64. This can be used in the filename format as {arch}.                           |
 |      check_command      | string |  false   |                                        |                                         Command to test if the tool was installed correctly.                                         |
@@ -32,7 +32,7 @@ Installs a tool from a GitHub repository release.
 |        os_macos         | string |  false   |               `"macos"`                |                         OS name when the platform is macOS. This can be used in the filename format as {os}.                         |
 |       os_windows        | string |  false   |              `"windows"`               |                        OS name when the platform is Windows. This can be used in the filename format as {os}.                        |
 |          owner          | string |   true   |                                        |                                                       GitHub repository owner.                                                       |
-|         rename          | string |  false   |                                        |                                        Rename a tool after it is installed; <before>=<after>.                                        |
+|         rename          | string |  false   |                                        |                                       Rename a tool after it is installed; `<before>=<after>`.                                       |
 |       repository        | string |   true   |                                        |                                                          GitHub repository.                                                          |
 |      subdirectory       | string |  false   |                                        |                                      Subdirectory within the archive to find the executable(s).                                      |
 |       tag_prefix        | string |  false   |                 `"v"`                  |                                                         Version tag prefix.                                                          |
