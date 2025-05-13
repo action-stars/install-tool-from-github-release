@@ -13,5 +13,3 @@ updates:
       prefix: deps
     schedule:
       interval: weekly
-    assignees:
-      - action-stars/dependabot-reviewers
