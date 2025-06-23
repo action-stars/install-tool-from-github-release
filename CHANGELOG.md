@@ -15,6 +15,10 @@
 
 ## [UNRELEASED]
 
+### Changed
+
+- Update crambl/dependabot-changelog-writer from `1.1.4` to `1.2.0`. ([#26](https://github.com/action-stars/install-tool-from-github-release/pull/26)) _@dependabot_
+
 ## [v0.2.5] - 2025-05-12
 
 ### Changed
