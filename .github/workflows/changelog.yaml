@@ -8,32 +8,9 @@ on:
 permissions: read-all
 
 jobs:
-  changelog:
-    name: Changelog
-    if: github.actor == 'dependabot[bot]'
-    runs-on: ubuntu-latest
+  workflow:
+    name: Workflow
+    uses: action-stars/generic-workflows/.github/workflows/dependabot-changelog.yaml@32bada41203267333204216e304b4964243583b3 # v0.6.0
     permissions:
       contents: read
       id-token: write
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 1
-      - uses: octo-sts/action@210248e8ae1ae1550aa6e232c6f192b3ccbf7335
-        id: sts
-        with:
-          scope: ${{ github.repository}}
-          identity: actions-pr
-      - name: Changelog
-        uses: crambl/dependabot-changelog-writer@341bb7760359f53edfbb22e99f7404192e5059cf # v1.2.0
-        with:
-          push-token: ${{ steps.sts.outputs.token }}
-          commit-message: "chore: Update changelog for Dependabot"
-          changelog: ./CHANGELOG.md
-          section-header: "Changed"
-          changelog-entry-pattern: "Update _[dep]_ from `[old]` to `[new]`. ([pr-link]) _@dependabot_"
-          push-changes: true
