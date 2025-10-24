@@ -121,6 +121,7 @@ runs:
 
     - name: Install tool
       uses: pbrisbin/setup-tool-action@87ea9f382eb6b0357d78908ac3b61cc4d8f87ef3 # v2.2.2
+      id: install
       with:
         github-token: ${{ inputs.github_token }}
         name: ${{ inputs.name || inputs.repository }}
@@ -142,30 +143,44 @@ runs:
     - name: Rename
       if: inputs.rename
       shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ steps.install.outputs.directory }}
+        INPUT_RENAME: ${{ inputs.rename }}
       run: |
         set -euo pipefail
 
-        input="${{ inputs.rename }}"
-        before="${input%=*}"
-        after="${input#*=}"
+        before="${INPUT_RENAME%=*}"
+        after="${INPUT_RENAME#*=}"
 
-        before_path="$(which "${before}")"
-        after_path="$(dirname "${before_path}")/${after}"
+        before_path="${INPUT_DIRECTORY}/${before}"
+        after_path="${INPUT_DIRECTORY}/${after}"
+
+        if [[ ! -f "${before_path}" ]]; then
+          echo "File does not exist: ${before_path}"
+          exit 1
+        fi
 
         mv -f "${before_path}" "${after_path}"
 
     - name: Alias
       if: inputs.alias
       shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ steps.install.outputs.directory }}
+        INPUT_ALIAS: ${{ inputs.alias }}
       run: |
         set -euo pipefail
 
-        input="${{ inputs.alias }}"
-        target="${input%=*}"
-        alias="${input#*=}"
+        target="${INPUT_ALIAS%=*}"
+        alias="${INPUT_ALIAS#*=}"
 
-        target_path="$(which "${target}")"
-        alias_path="$(dirname "${target_path}")/${alias}"
+        target_path="${INPUT_DIRECTORY}/${target}"
+        alias_path="${INPUT_DIRECTORY}/${alias}"
+
+        if [[ ! -f "${target_path}" ]]; then
+          echo "Target file does not exist: ${target_path}"
+          exit 1
+        fi
 
         ln -s "${target_path}" "${alias_path}"
 

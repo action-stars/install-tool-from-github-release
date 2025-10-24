@@ -22,6 +22,10 @@
 - Update _action-stars/generic-workflows_ from `0.7.0` to `0.7.1`. ([#29](https://github.com/action-stars/install-tool-from-github-release/pull/29)) _@dependabot_
 - Update _action-stars/generic-workflows_ from `0.7.1` to `0.7.2`. ([#30](https://github.com/action-stars/install-tool-from-github-release/pull/30)) _@dependabot_
 
+### Fixed
+
+- Fix `rename` & `alias` inputs to use the installation directory. ([#31](https://github.com/action-stars/install-tool-from-github-release/pull/31)) _@stevehipwell_
+
 ## [v0.2.5] - 2025-05-12
 
 ### Changed
