@@ -15,6 +15,8 @@
 
 ## [UNRELEASED]
 
+## [v0.2.6] - 2025-10-24
+
 ### Changed
 
 - Update _action-stars/generic-workflows_ from `0.5.3` to `0.6.0`. ([#27](https://github.com/action-stars/install-tool-from-github-release/pull/27)) _@dependabot_
@@ -77,7 +79,8 @@
 <!--
 RELEASES
 -->
-[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.5...HEAD
+[UNRELEASED]: https://github.com/action-stars/install-tool-from-github-release/compare/v0.2.6...HEAD
+[v0.2.6]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/action-stars/install-tool-from-github-release/releases/tag/v0.2.3
