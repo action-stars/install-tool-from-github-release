@@ -26,6 +26,7 @@
 - Update _action-stars/generic-workflows/.github/workflows/dependabot-changelog.yaml_ from `0.7.4` to `0.8.0`. ([#34](https://github.com/action-stars/install-tool-from-github-release/pull/34)) _@dependabot_
 - Update _action-stars/generic-workflows/.github/workflows/release.yaml_ from `0.7.4` to `0.8.0`. ([#34](https://github.com/action-stars/install-tool-from-github-release/pull/34)) _@dependabot_
 - Update _action-stars/generic-workflows/.github/workflows/validate-gh-workflows.yaml_ from `0.7.4` to `0.8.0`. ([#34](https://github.com/action-stars/install-tool-from-github-release/pull/34)) _@dependabot_
+- Update _action-stars/github-release-lookup_ from `0.1.0` to `0.2.0`. ([#35](https://github.com/action-stars/install-tool-from-github-release/pull/35)) _@dependabot_
 
 ## [v0.2.6] - 2025-10-24
 
