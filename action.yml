@@ -90,7 +90,7 @@ runs:
   steps:
     - name: Lookup version
       id: version
-      uses: action-stars/github-release-lookup@c86fa936d2dea43eac094b7d3e4ed486a93d1484 # v0.1.0
+      uses: action-stars/github-release-lookup@eb5368c783ecb8be49bf8a429640b50976a04225 # v0.2.0
       with:
         github_token: ${{ inputs.github_token }}
         owner: ${{ inputs.owner }}
