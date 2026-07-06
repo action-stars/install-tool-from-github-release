@@ -8,6 +8,6 @@ on:
 jobs:
   workflow:
     name: Workflow
-    uses: action-stars/generic-workflows/.github/workflows/release.yaml@d4724b3ea1635d9cc7064f5302cc411e54d52334 # v0.9.0
+    uses: action-stars/generic-workflows/.github/workflows/release.yaml@436b5d8ebbc67151ec77f214d667d7393c3916af # v0.11.0
     permissions:
       contents: write
