@@ -1,19 +1,22 @@
-set windows-shell := ["pwsh", "-NoLogo", "-Command"]
+set windows-shell := ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
 
 default:
-  just --list
+    just --list
 
 actionlint:
-  actionlint -shellcheck=shellcheck
+    actionlint -shellcheck=shellcheck
 
-markdownlint:
-  npm exec --yes -- markdownlint-cli2 --fix "**/*.{md,markdown}"
+mdfmt:
+    rumdl fmt --fix .
+
+mdlint:
+    rumdl check .
 
 shellcheck:
-  {{ if os_family() == "windows" { "Get-ChildItem -Recurse -File | Where-Object { $_.Extension -eq '.sh' } | ForEach-Object { & shellcheck $_.FullName }" } else { "find . -type f -name '*.sh' | xargs --no-run-if-empty -n1 shellcheck" } }}
+    {{ if os_family() == "windows" { "Get-ChildItem -Recurse -File | Where-Object { $_.Extension -eq '.sh' } | ForEach-Object { & shellcheck $_.FullName }" } else { "find . -type f -name '*.sh' | xargs --no-run-if-empty -n1 shellcheck" } }}
 
 yamlfmt:
-  yamlfmt -continue_on_error
+    yamlfmt -continue_on_error .
 
 docs:
-  auto-doc --colMaxWords 100 --repository action-stars/install-tool-from-github-release --filename action.yml
+    auto-doc --colMaxWords 100 --repository action-stars/install-tool-from-github-release --filename action.yml

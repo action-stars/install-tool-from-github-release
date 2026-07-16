@@ -7,6 +7,10 @@ inputs:
   github_token:
     description: GitHub token to use for authentication.
     required: true
+  ghactl_version:
+    description: Version of ghactl to use for installation; defaults to `latest`.
+    required: false
+    default: latest
   owner:
     description: GitHub repository owner.
     required: true
@@ -48,15 +52,15 @@ inputs:
     description: Subdirectory within the archive to find the executable(s).
     required: false
   extract_mode_linux:
-    description: Extraction mode when the runner platform is Linux; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
+    description: Extraction mode when the runner platform is Linux; one of tar.gz or zip. This can be used in the filename format as {ext}.
     required: false
     default: tar.gz
   extract_mode_macos:
-    description: Extraction mode when the platform is macOS; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
+    description: Extraction mode when the platform is macOS; one of tar.gz or zip. This can be used in the filename format as {ext}.
     required: false
     default: tar.gz
   extract_mode_windows:
-    description: Extraction mode when the platform is Windows; one of tar.gz, zip, 7z, or xar. This can be used in the filename format as {ext}.
+    description: Extraction mode when the platform is Windows; one of tar.gz or zip. This can be used in the filename format as {ext}.
     required: false
     default: zip
   filename_format:
@@ -88,6 +92,71 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Lookup ghactl version
+      id: ghactl_version
+      uses: action-stars/github-release-lookup@eb5368c783ecb8be49bf8a429640b50976a04225 # v0.2.0
+      with:
+        github_token: ${{ inputs.github_token }}
+        owner: action-stars
+        repository: ghactl
+        tag_prefix: v
+        version: ${{ inputs.ghactl_version }}
+
+    - name: Install ghactl
+      id: install_ghactl
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_GHACTL_VERSION: ${{ steps.ghactl_version.outputs.version }}
+      run: |
+        set -euo pipefail
+
+        case "${RUNNER_OS}" in
+          Linux)
+            os="linux"
+            ;;
+          macOS)
+            os="darwin"
+            ;;
+          Windows)
+            os="windows"
+            ;;
+          *)
+            echo "Unsupported runner OS: ${RUNNER_OS}"
+            exit 1
+            ;;
+        esac
+
+        case "${RUNNER_ARCH}" in
+          X64)
+            arch="amd64"
+            ;;
+          ARM64)
+            arch="arm64"
+            ;;
+          *)
+            echo "Unsupported runner architecture: ${RUNNER_ARCH}"
+            exit 1
+            ;;
+        esac
+
+        temp_dir="$(mktemp -d)"
+        archive_path="${temp_dir}/ghactl.tar.gz"
+        url="https://github.com/action-stars/ghactl/releases/download/v${INPUT_GHACTL_VERSION}/ghactl_${INPUT_GHACTL_VERSION}_${os}_${arch}.tar.gz"
+        curl --silent --show-error --fail --location --header "Authorization: Bearer ${GITHUB_TOKEN}" --output "${archive_path}" "${url}"
+
+        tar -xzf "${archive_path}" --directory "${temp_dir}"
+
+        if [[ "${RUNNER_OS}" == "Windows" ]]; then
+          ghactl_cmd="${temp_dir}/ghactl.exe"
+        else
+          ghactl_cmd="${temp_dir}/ghactl"
+        fi
+
+        cached_dir="$("${ghactl_cmd}" tool cache add dir --source "${temp_dir}" --name ghactl --version "${INPUT_GHACTL_VERSION}" --arch "${arch}")"
+
+        echo "${cached_dir}" >> "${GITHUB_PATH}"
+
     - name: Lookup version
       id: version
       uses: action-stars/github-release-lookup@eb5368c783ecb8be49bf8a429640b50976a04225 # v0.2.0
@@ -120,25 +189,150 @@ runs:
         fi
 
     - name: Install tool
-      uses: pbrisbin/setup-tool-action@87ea9f382eb6b0357d78908ac3b61cc4d8f87ef3 # v2.2.2
       id: install
-      with:
-        github-token: ${{ inputs.github_token }}
-        name: ${{ inputs.name || inputs.repository }}
-        no-extract: ${{ !fromJSON(inputs.extract) }}
-        arch-x64: ${{ inputs.arch_amd64 }}
-        os-linux: ${{ inputs.os_linux }}
-        os-darwin: ${{ inputs.os_macos }}
-        os-win32: ${{ inputs.os_windows }}
-        ext-linux: ${{ inputs.extract_mode_linux }}
-        ext-darwin: ${{ inputs.extract_mode_macos }}
-        ext-win32: ${{ inputs.extract_mode_windows }}
-        subdir: ${{ inputs.subdirectory }}
-        url-linux: ${{ inputs.filename_format_linux && steps.platform_urls.outputs.linux_url }}
-        url-darwin: ${{ inputs.filename_format_macos && steps.platform_urls.outputs.macos_url }}
-        url-win32: ${{ inputs.filename_format_windows && steps.platform_urls.outputs.windows_url  }}
-        url: https://github.com/${{ inputs.owner }}/${{ inputs.repository }}/releases/download/${{ inputs.tag_prefix }}{version}/${{ inputs.filename_format }}
-        version: ${{ steps.version.outputs.version }}
+      shell: bash
+      env:
+        INPUT_NAME: ${{ inputs.name || inputs.repository }}
+        INPUT_EXTRACT: ${{ inputs.extract }}
+        INPUT_SUBDIRECTORY: ${{ inputs.subdirectory }}
+        INPUT_ARCH_AMD64: ${{ inputs.arch_amd64 }}
+        INPUT_ARCH_ARM64: ${{ inputs.arch_arm64 }}
+        INPUT_OS_LINUX: ${{ inputs.os_linux }}
+        INPUT_OS_MACOS: ${{ inputs.os_macos }}
+        INPUT_OS_WINDOWS: ${{ inputs.os_windows }}
+        INPUT_EXTRACT_MODE_LINUX: ${{ inputs.extract_mode_linux }}
+        INPUT_EXTRACT_MODE_MACOS: ${{ inputs.extract_mode_macos }}
+        INPUT_EXTRACT_MODE_WINDOWS: ${{ inputs.extract_mode_windows }}
+        INPUT_FILENAME_FORMAT: ${{ inputs.filename_format }}
+        INPUT_FILENAME_FORMAT_LINUX: ${{ inputs.filename_format_linux }}
+        INPUT_FILENAME_FORMAT_MACOS: ${{ inputs.filename_format_macos }}
+        INPUT_FILENAME_FORMAT_WINDOWS: ${{ inputs.filename_format_windows }}
+        INPUT_OWNER: ${{ inputs.owner }}
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_TAG_PREFIX: ${{ inputs.tag_prefix }}
+        INPUT_VERSION: ${{ steps.version.outputs.version }}
+        INPUT_URL_LINUX: ${{ steps.platform_urls.outputs.linux_url }}
+        INPUT_URL_MACOS: ${{ steps.platform_urls.outputs.macos_url }}
+        INPUT_URL_WINDOWS: ${{ steps.platform_urls.outputs.windows_url }}
+      run: |
+        set -euo pipefail
+
+        case "${RUNNER_OS}" in
+          Linux)
+            runtime_os="linux"
+            os_value="${INPUT_OS_LINUX}"
+            extract_mode="${INPUT_EXTRACT_MODE_LINUX}"
+            platform_url="${INPUT_URL_LINUX}"
+            ;;
+          macOS)
+            runtime_os="darwin"
+            os_value="${INPUT_OS_MACOS}"
+            extract_mode="${INPUT_EXTRACT_MODE_MACOS}"
+            platform_url="${INPUT_URL_MACOS}"
+            ;;
+          Windows)
+            runtime_os="win32"
+            os_value="${INPUT_OS_WINDOWS}"
+            extract_mode="${INPUT_EXTRACT_MODE_WINDOWS}"
+            platform_url="${INPUT_URL_WINDOWS}"
+            ;;
+          *)
+            echo "Unsupported runner OS: ${RUNNER_OS}"
+            exit 1
+            ;;
+        esac
+
+        case "${RUNNER_ARCH}" in
+          X64)
+            runtime_arch="amd64"
+            arch_value="${INPUT_ARCH_AMD64}"
+            ;;
+          ARM64)
+            runtime_arch="arm64"
+            arch_value="${INPUT_ARCH_ARM64}"
+            ;;
+          *)
+            echo "Unsupported runner architecture: ${RUNNER_ARCH}"
+            exit 1
+            ;;
+        esac
+
+        should_extract="${INPUT_EXTRACT}"
+        if [[ "${should_extract}" == "true" ]]; then
+          case "${extract_mode}" in
+            tar.gz|zip)
+              ;;
+            *)
+              echo "Unsupported extract mode: ${extract_mode}. Supported modes are tar.gz and zip."
+              exit 1
+              ;;
+          esac
+        fi
+
+        if [[ -n "${platform_url}" ]]; then
+          url_template="${platform_url}"
+        else
+          url_template="https://github.com/${INPUT_OWNER}/${INPUT_REPOSITORY}/releases/download/${INPUT_TAG_PREFIX}{version}/${INPUT_FILENAME_FORMAT}"
+        fi
+
+        download_url="${url_template//\{name\}/${INPUT_NAME}}"
+        download_url="${download_url//\{version\}/${INPUT_VERSION}}"
+        download_url="${download_url//\{os\}/${os_value}}"
+        download_url="${download_url//\{arch\}/${arch_value}}"
+        download_url="${download_url//\{ext\}/${extract_mode}}"
+
+        install_directory="$(ghactl tool cache find --name "${INPUT_NAME}" --version "${INPUT_VERSION}" --arch "${runtime_arch}" || true)"
+        install_directory="$(printf '%s' "${install_directory}" | tr -d '\r' | tail -n 1)"
+
+        if [[ -z "${install_directory}" ]]; then
+          download_path="$(ghactl tool download --url "${download_url}")"
+          download_path="$(printf '%s' "${download_path}" | tr -d '\r' | tail -n 1)"
+
+          if [[ "${should_extract}" == "true" ]]; then
+            case "${extract_mode}" in
+              tar.gz)
+                extracted_path="$(ghactl tool extract tgz --path "${download_path}")"
+                ;;
+              zip)
+                extracted_path="$(ghactl tool extract zip --path "${download_path}")"
+                ;;
+              *)
+                echo "Unsupported extract mode: ${extract_mode}. Supported modes are tar.gz and zip."
+                exit 1
+                ;;
+            esac
+            extracted_path="$(printf '%s' "${extracted_path}" | tr -d '\r' | tail -n 1)"
+
+            if [[ -n "${INPUT_SUBDIRECTORY}" ]]; then
+              source_path="${extracted_path}/${INPUT_SUBDIRECTORY}"
+            else
+              source_path="${extracted_path}"
+            fi
+
+            if [[ ! -d "${source_path}" ]]; then
+              echo "Source directory does not exist: ${source_path}"
+              exit 1
+            fi
+
+            install_directory="$(ghactl tool cache add dir --source "${source_path}" --name "${INPUT_NAME}" --version "${INPUT_VERSION}" --arch "${runtime_arch}")"
+          else
+            install_directory="$(ghactl tool cache add file --source "${download_path}" --name "${INPUT_NAME}" --version "${INPUT_VERSION}" --arch "${runtime_arch}" --target-name "${INPUT_NAME}")"
+          fi
+        fi
+
+        install_directory="$(printf '%s' "${install_directory}" | tr -d '\r' | tail -n 1)"
+
+        if [[ -f "${install_directory}" ]]; then
+          install_directory="$(dirname "${install_directory}")"
+        fi
+
+        if [[ ! -d "${install_directory}" ]]; then
+          echo "Install directory does not exist: ${install_directory}"
+          exit 1
+        fi
+
+        echo "directory=${install_directory}" >> "${GITHUB_OUTPUT}"
+        echo "${install_directory}" >> "${GITHUB_PATH}"
 
     - name: Rename
       if: inputs.rename

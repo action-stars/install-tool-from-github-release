@@ -17,6 +17,9 @@
 
 ### Changed
 
+- Replaced _pbrisbin/setup-tool-action_ with _action-stars/ghactl_ for tool download, extraction, and cache installation.
+- Added the `ghactl_version` input to control the _ghactl_ release used by this action; defaults to `latest`.
+- Restricted `extract_mode_linux`, `extract_mode_macos`, and `extract_mode_windows` to `tar.gz` and `zip`.
 - Update _action-stars/generic-workflows/.github/workflows/dependabot-changelog.yaml_ from `0.7.2` to `0.7.3`. ([#32](https://github.com/action-stars/install-tool-from-github-release/pull/32)) _@dependabot_
 - Update _action-stars/generic-workflows/.github/workflows/release.yaml_ from `0.7.2` to `0.7.3`. ([#32](https://github.com/action-stars/install-tool-from-github-release/pull/32)) _@dependabot_
 - Update _action-stars/generic-workflows/.github/workflows/validate-gh-workflows.yaml_ from `0.7.2` to `0.7.3`. ([#32](https://github.com/action-stars/install-tool-from-github-release/pull/32)) _@dependabot_
